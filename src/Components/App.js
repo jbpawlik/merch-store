@@ -2,6 +2,7 @@ import './App.css';
 import React from 'react';
 import Header from './Header'
 import Inventory from './Inventory'
+import ProductControl from './ProductControl';
 
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
     <React.Fragment>
       <Header />
       <Inventory />
+      <ProductControl />
     </React.Fragment>
   );
 }

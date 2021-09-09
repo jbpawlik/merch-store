@@ -3,7 +3,13 @@ import Listing from './Listing'
 
 function Inventory() {
   return (
-    <Listing />
+    <React.Fragment>
+      {productListings.map((product, index) =>
+        <Listing name={product.name}
+        description={product.description}
+        key={index}/>
+    <React.Fragment>
+      )}
   )
 }
 
