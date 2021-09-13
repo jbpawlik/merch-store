@@ -1,13 +1,16 @@
 import React from 'react';
-import NewListing from './NewListing';
+import NewListingForm from './NewListing';
 import Inventory from './Inventory';
+import ListingDetail from './ListingDetail';
 
 class ProductControl extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      formVisibleOnPage: false
+      formVisibleOnPage: false,
+      masterInventory: [],
+      selectedListing: null
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -18,22 +21,30 @@ class ProductControl extends React.Component {
     }));
   }
 
-  render() {
+ handleAddingNewListingToInventory = (newListing) => {
+    const newMasterInventory = this.state.masterInventory.concat(newListing);
+    this.setState({masterInventory: newMasterInventory,
+                  formVisibleOnPage: false });
+    }
+  render(){
     let currentlyVisibleState = null;
     let buttonText = null;
-    if (this.state.formVisibleOnPage) {
-      currentlyVisibleState = <NewListing />;
-      buttonText = "Return to Inventory"
-      
+
+    if (this.state.selectedListing != null) {
+      currentlyVisibleState = <ListingDetail listing = {this.state.selectedListing} />
+      buttonText = "Return to Inventory";
+    } else if (this.state.formVisibleOnPage) {
+      currentlyVisibleState = <NewListingForm onNewTicketCreation={this.handleAddingNewListingToInventory}  />;
+      buttonText = "Return to Inventory";
     } else {
-      currentlyVisibleState = <Inventory />;
+      currentlyVisibleState = <Inventory inventory={this.state.masterInventory} onSelection={this.handleChangingSelectedListing} />;
       buttonText = "Add Listing";
     }
-    return (
-      <React.Fragment>
-        {currentlyVisibleState}
-        <button onClick={this.handleClick}>{buttonText}</button>
-      </React.Fragment>
+  return (
+    <React.Fragment>
+      {currentlyVisibleState}
+      <button onClick={this.handleClick}>{buttonText}</button>
+    </React.Fragment>
     );
   }
 }
